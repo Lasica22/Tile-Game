@@ -16,7 +16,8 @@ public class Player extends Creature {
 
     @Override
     public void tick() {
-
+        getInput();
+        move();
     }
 
     private void getInput(){
