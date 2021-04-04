@@ -12,23 +12,33 @@ import java.awt.image.BufferedImage;
 public class Player extends Creature {
 
     // Animations
-    private Animation animDown, animRight, animUp, animLeft;
+    private final Animation animDown, animRight, animUp, animLeft;
+    private final Animation animAttackDown, animAttackRight, animAttackUp, animAttackLeft;
     // Attack timer
-    private long lastAttackTimer, attackCooldown = 800, attackTimer = attackCooldown;
+    private long lastAttackTimer;
+    private final long attackCooldown = 2000;
+    private long attackTimer = attackCooldown;
+
+    private float xAttack = 0, yAttack = 0;
 
     public Player(Handler handler, float x, float y) {
         super(handler, x, y, Creature.DEFAULT_CREATURE_WIDTH, Creature.DEFAULT_CREATURE_HEIGHT);
 
-        bounds.x = 22;
-        bounds.y = 22;
+        bounds.x = 32;
+        bounds.y = 48;
         bounds.width = 32;
         bounds.height = 48;
 
         // Animations
-        animDown = new Animation(500, Assets.playerDown);
-        animRight = new Animation(500, Assets.playerRight);
-        animUp = new Animation(500, Assets.playerUp);
-        animLeft = new Animation(500, Assets.playerLeft);
+        animDown = new Animation(150, Assets.playerDown);
+        animRight = new Animation(150, Assets.playerRight);
+        animUp = new Animation(150, Assets.playerUp);
+        animLeft = new Animation(150, Assets.playerLeft);
+
+        animAttackDown = new Animation(100, Assets.playerAttackDown);
+        animAttackRight = new Animation(100, Assets.playerAttackRight);
+        animAttackUp = new Animation(100, Assets.playerAttackUp);
+        animAttackLeft = new Animation(100, Assets.playerAttackLeft);
     }
 
     @Override
@@ -39,19 +49,31 @@ public class Player extends Creature {
         animUp.tick();
         animLeft.tick();
 
+        animAttackDown.tick();
+        animAttackRight.tick();
+        animAttackUp.tick();
+        animAttackLeft.tick();
+
         // Movement
         getInput();
+        // Checking attacks before movement, if player is attacking he should stay still
+        checkAttacks();
         move();
         handler.getGameCamera().centerOnEntity(this);
         // Attack
-        checkAttacks();
+
     }
 
     private void checkAttacks(){
+
         attackTimer += System.currentTimeMillis() - lastAttackTimer;
         lastAttackTimer = System.currentTimeMillis();
-        if(attackTimer < attackCooldown)
+        if(attackTimer < attackCooldown) {
+            // Player stanting still while attacking
+            xMove = 0;
+            yMove = 0;
             return;
+        }
 
         Rectangle cb = getCollisionBounds(0,0);
         Rectangle ar = new Rectangle();
@@ -62,15 +84,23 @@ public class Player extends Creature {
         if(handler.getKeyManager().aUp){
             ar.x = cb.x + cb.width / 2 - arSize / 2;
             ar.y = cb.y - arSize;
+            xAttack = 0;
+            yAttack = 1;
         }else if(handler.getKeyManager().aDown){
             ar.x = cb.x + cb.width / 2 - arSize / 2;
             ar.y = cb.y + cb.height;
+            xAttack = 0;
+            yAttack = -1;
         }else if(handler.getKeyManager().aLeft){
             ar.x = cb.x - arSize;
             ar.y = cb.y + cb.height / 2 - arSize / 2;
+            xAttack = -1;
+            yAttack = 0;
         }else if(handler.getKeyManager().aRight){
             ar.x = cb.x + cb.width;
             ar.y = cb.y + cb.height / 2 - arSize / 2;
+            xAttack = 1;
+            yAttack = 0;
         }else{
             return;
         }
@@ -103,13 +133,15 @@ public class Player extends Creature {
 
     @Override
     public void render(Graphics g) {
-        g.drawImage(getCurrentAnimationFrame(), (int) (x),
+        g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
-        g.setColor(Color.blue);
-         g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
-                (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
-                bounds.width, bounds.height);
+        // Test code to check player boundaries
+        
+       // g.setColor(Color.blue);
+       // g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+              //  (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
+              //  bounds.width, bounds.height);
     }
 
     @Override
@@ -118,15 +150,23 @@ public class Player extends Creature {
     }
 
     private BufferedImage getCurrentAnimationFrame(){
-        if(xMove < 0){
+
+        if(attackTimer < attackCooldown & yAttack < 0){
+            return animAttackDown.getCurrentFrame();
+        }else if (attackTimer < attackCooldown & yAttack > 0){
+            return animAttackUp.getCurrentFrame();
+        }else if (attackTimer < attackCooldown & xAttack < 0){
+            return animAttackLeft.getCurrentFrame();
+        }else if (attackTimer < attackCooldown & xAttack > 0){
+            return animAttackRight.getCurrentFrame();
+        } else if(xMove < 0){
             return animLeft.getCurrentFrame();
         }else if(xMove > 0){
             return animRight.getCurrentFrame();
         }else if(yMove < 0){
-            return  animUp.getCurrentFrame();
-        }else{
+            return animUp.getCurrentFrame();
+        }else {
             return animDown.getCurrentFrame();
         }
-
     }
 }

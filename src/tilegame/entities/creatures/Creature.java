@@ -7,8 +7,8 @@ import tilegame.tiles.Tile;
 public abstract class Creature extends Entity {
 
     public static final float DEFAULT_SPEED = 3.0f;
-    public static final int DEFAULT_CREATURE_WIDTH = 64,
-                            DEFAULT_CREATURE_HEIGHT = 64;
+    public static final int DEFAULT_CREATURE_WIDTH = 96,
+                            DEFAULT_CREATURE_HEIGHT = 96;
 
     protected float speed;
     protected float xMove, yMove;

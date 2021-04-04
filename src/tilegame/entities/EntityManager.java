@@ -5,36 +5,34 @@ import tilegame.entities.creatures.Player;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 
 public class EntityManager {
 
     private Handler handler;
     private Player player;
     private ArrayList<Entity> entities;
-    private Comparator<Entity> renderSorter = new Comparator<Entity>() {
-        @Override
-        public int compare(Entity a, Entity b) {
-            if(a.getY() + a.getHeight() < b.getY() + b.getHeight())
-                return -1;
-            return 1;
-        }
+    private final Comparator<Entity> renderSorter = (a, b) -> {
+        if (a.getY() + a.getHeight() < b.getY() + b.getHeight())
+            return -1;
+        return 1;
     };
 
     public EntityManager(Handler handler, Player player){
         this.handler = handler;
         this.player = player;
-        entities = new ArrayList<Entity>();
+        entities = new ArrayList<>();
         addEntity(player);
     }
 
     public void tick(){
-        for(int i = 0;i < entities.size();i++){
-            Entity e = entities.get(i);
+        Iterator<Entity> it = entities.iterator();
+        while(it.hasNext()){
+            Entity e = it.next();
             e.tick();
             if(!e.isActive())
-                entities.remove(e);
+                it.remove();
         }
          entities.sort(renderSorter);
     }
