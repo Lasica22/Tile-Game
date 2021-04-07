@@ -28,6 +28,9 @@ public class World {
 
         // Temporary entity code
         entityManager.addEntity(new Bush(handler,100,250));
+        entityManager.addEntity(new Bush(handler,100,450));
+        entityManager.addEntity(new Bush(handler,300,250));
+        entityManager.addEntity(new Bush(handler,300,450));
 
         loadWorld(path);
 

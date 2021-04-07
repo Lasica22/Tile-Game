@@ -11,6 +11,7 @@ public class Assets {
     public static BufferedImage[] playerDown, playerRight, playerUp, playerLeft;
     public static BufferedImage[] playerAttackDown, playerAttackRight, playerAttackUp, playerAttackLeft;
     public static BufferedImage[] btn_start;
+    public static BufferedImage inventoryScreen;
 
     public static void init (){
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Assets.png"));
@@ -29,9 +30,9 @@ public class Assets {
         SpriteSheet playerSheet = new SpriteSheet(ImageLoader.loadImage("/textures/PlayerWalking.png"));
 
         playerUp = new BufferedImage[8];
-        playerLeft = new BufferedImage[8];
-        playerDown = new BufferedImage[8];
-        playerRight = new BufferedImage[8];
+        playerLeft = new BufferedImage[playerUp.length];
+        playerDown = new BufferedImage[playerUp.length];
+        playerRight = new BufferedImage[playerUp.length];
 
         for(int i = 0; i < playerUp.length; i++){
             playerUp[i] = playerSheet.crop(playerWidth * (i + 1), 0, playerWidth, playerHeight);
@@ -43,9 +44,9 @@ public class Assets {
         SpriteSheet attackSheet = new SpriteSheet(ImageLoader.loadImage("/textures/PlayerAttack.png"));
 
         playerAttackUp = new BufferedImage[6];
-        playerAttackLeft = new BufferedImage[6];
-        playerAttackDown = new BufferedImage[6];
-        playerAttackRight = new BufferedImage[6];
+        playerAttackLeft = new BufferedImage[playerAttackUp.length];
+        playerAttackDown = new BufferedImage[playerAttackUp.length];
+        playerAttackRight = new BufferedImage[playerAttackUp.length];
 
 
         for(int i = 0; i < playerAttackUp.length; i++){
@@ -54,5 +55,7 @@ public class Assets {
             playerAttackDown[i] = attackSheet.crop(playerWidth * i, playerHeight * 2, playerWidth, playerHeight);
             playerAttackRight[i] = attackSheet.crop(playerWidth * i, playerHeight * 3, playerWidth, playerHeight);
         }
+
+        inventoryScreen = ImageLoader.loadImage("/textures/inventoryScreen.png");
     }
 }

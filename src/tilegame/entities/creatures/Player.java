@@ -5,6 +5,7 @@ import tilegame.Handler;
 import tilegame.entities.Entity;
 import tilegame.gfx.Animation;
 import tilegame.gfx.Assets;
+import tilegame.inventory.Inventory;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -16,8 +17,11 @@ public class Player extends Creature {
     private final Animation animAttackDown, animAttackRight, animAttackUp, animAttackLeft;
     // Attack timer
     private long lastAttackTimer;
-    private final long attackCooldown = 2000;
+    private final long attackCooldown = 800;
     private long attackTimer = attackCooldown;
+    // Inventory
+    private Inventory inventory;
+
 
     private float xAttack = 0, yAttack = 0;
 
@@ -39,6 +43,8 @@ public class Player extends Creature {
         animAttackRight = new Animation(100, Assets.playerAttackRight);
         animAttackUp = new Animation(100, Assets.playerAttackUp);
         animAttackLeft = new Animation(100, Assets.playerAttackLeft);
+
+        inventory = new Inventory(handler);
     }
 
     @Override
@@ -60,7 +66,8 @@ public class Player extends Creature {
         checkAttacks();
         move();
         handler.getGameCamera().centerOnEntity(this);
-        // Attack
+        // Inventory
+        inventory.tick();
 
     }
 
@@ -136,12 +143,14 @@ public class Player extends Creature {
         g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
+        inventory.render(g);
+
         // Test code to check player boundaries
         
-       // g.setColor(Color.blue);
-       // g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
-              //  (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
-              //  bounds.width, bounds.height);
+        // g.setColor(Color.blue);
+        // g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
+            //  (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
+            //  bounds.width, bounds.height);
     }
 
     @Override
@@ -168,5 +177,13 @@ public class Player extends Creature {
         }else {
             return animDown.getCurrentFrame();
         }
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
 }
