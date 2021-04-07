@@ -1,11 +1,14 @@
 package tilegame.gfx;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Assets {
 
     private static final int width = 16, height = 16;
     private static final int playerWidth = 64, playerHeight = 64;
+
+    public static Font font28;
 
     public static BufferedImage player, dirt, grass, stone, bush, stick;
     public static BufferedImage[] playerDown, playerRight, playerUp, playerLeft;
@@ -14,6 +17,8 @@ public class Assets {
     public static BufferedImage inventoryScreen;
 
     public static void init (){
+        font28 = FontLoader.loadFont("res/fonts/Montserrat-Regular.otf", 28);
+
         SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/Assets.png"));
 
         btn_start = new BufferedImage[2];

@@ -82,6 +82,9 @@ public class Player extends Creature {
             return;
         }
 
+        if(inventory.isActive())
+            return;
+
         Rectangle cb = getCollisionBounds(0,0);
         Rectangle ar = new Rectangle();
         int arSize = 20;
@@ -128,6 +131,9 @@ public class Player extends Creature {
         xMove = 0;
         yMove = 0;
 
+        if(inventory.isActive())
+            return;
+
         if(handler.getKeyManager().up)
             yMove = -speed;
         if(handler.getKeyManager().down)
@@ -143,14 +149,16 @@ public class Player extends Creature {
         g.drawImage(getCurrentAnimationFrame(), (int) (x - handler.getGameCamera().getxOffset()),
                 (int) (y - handler.getGameCamera().getyOffset()), width, height, null);
 
-        inventory.render(g);
-
         // Test code to check player boundaries
         
         // g.setColor(Color.blue);
         // g.fillRect((int) (x + bounds.x - handler.getGameCamera().getxOffset()),
             //  (int) (y + bounds.y - handler.getGameCamera().getyOffset()),
             //  bounds.width, bounds.height);
+    }
+
+    public void postRender(Graphics g){
+        inventory.render(g);
     }
 
     @Override

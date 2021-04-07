@@ -12,7 +12,7 @@ public class Item {
 
     public static Item[] items = new Item[256];
     public static Item stickItem = new Item(Assets.stick, "Stick", 0);
-    public static Item stoneItem = new Item(Assets.stone, "Stone", 0);
+    public static Item stoneItem = new Item(Assets.stone, "Stone", 1);
 
     // Class
 
@@ -54,6 +54,13 @@ public class Item {
 
     public void render(Graphics g,int x, int y){
         g.drawImage(texture, x, y, ITEMWIDTH, ITEMHEIGHT, null);
+    }
+
+    public Item createNew(int count){
+        Item i = new Item(texture, name, id);
+        i.setPickedUp(true);
+        i.setCount(count);
+        return i;
     }
 
     public Item createNew(int x, int y){
@@ -121,6 +128,10 @@ public class Item {
 
     public void setX(int x) {
         this.x = x;
+    }
+
+    public void setPickedUp(boolean pickedUp) {
+        this.pickedUp = pickedUp;
     }
 
     public boolean isPickedUp() {
