@@ -10,7 +10,10 @@ public class Assets {
 
     public static Font font28;
 
-    public static BufferedImage player, dirt, grass, stone, bush, stick;
+    public static BufferedImage waterBlank, dirt, grass, stone, bush, stick;
+    public static BufferedImage grassWaterN, grassWaterNE, grassWaterE, grassWaterSE, grassWaterS, grassWaterSW,
+            grassWaterW, grassWaterNW;
+    public static BufferedImage waterGrassNW, waterGrassNE, waterGrassSW, waterGrassSE;
     public static BufferedImage[] playerDown, playerRight, playerUp, playerLeft;
     public static BufferedImage[] playerAttackDown, playerAttackRight, playerAttackUp, playerAttackLeft;
     public static BufferedImage[] btn_start;
@@ -25,12 +28,25 @@ public class Assets {
         btn_start[0] = sheet.crop(0, height,width * 2,height);
         btn_start[1] = sheet.crop(width * 2, height, width * 2, height);
 
-        player = sheet.crop (0,0, width, height);
+        waterBlank = sheet.crop (0,0, width, height);
         dirt = sheet.crop(width, 0, width, height);
         grass = sheet.crop(width * 2, 0, width, height);
-        stone = sheet.crop(width * 3, 0 ,width, height);
+        stone = sheet.crop(width * 3, 0,width, height);
         bush = sheet.crop(width * 4, 0,width, height);
         stick = sheet.crop(width * 5, 0, width, height);
+
+        grassWaterN = sheet.crop(width, height * 2, width, height);
+        grassWaterNE = sheet.crop(width * 2, height * 2, width, height);
+        grassWaterE = sheet.crop(width * 2, height * 3, width, height);
+        grassWaterSE = sheet.crop(width * 2, height * 4, width, height);
+        grassWaterS = sheet.crop(width, height * 4, width, height);
+        grassWaterSW = sheet.crop(0, height * 4, width, height);
+        grassWaterW = sheet.crop(0, height * 3, width, height);
+        grassWaterNW = sheet.crop(0, height * 2, width, height);
+        waterGrassNW = sheet.crop(0, height * 5, width, height);
+        waterGrassNE = sheet.crop(width, height * 5, width, height);
+        waterGrassSW = sheet.crop(0, height * 6, width, height);
+        waterGrassSE = sheet.crop(width, height * 6, width, height);
 
         SpriteSheet playerSheet = new SpriteSheet(ImageLoader.loadImage("/textures/PlayerWalking.png"));
 
